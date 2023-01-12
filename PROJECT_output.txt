@@ -1,0 +1,5 @@
+||	<convex_hull random local_search>	||	<convex_hull min local_search>	||	<convex_hull max local_search>	||	<incremental random 1a local_search>	||	<incremental random 1b local_search>	||	<incremental random 2a local_search>	||	<incremental random 2b local_search>	||	<incremental min 1a local_search>	||	<incremental min 1b local_search>	||	<incremental min 2a local_search>	||	<incremental min 2b local_search>	||
+Size		||	min_score	||	max_score	||	min_bound	||	max_bound	||<<<<<<<<<<<<||
+10	||
+20	||
+30	||
