@@ -15,15 +15,15 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <algorithm>
 using namespace std::chrono;
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef K::Point_2 Point_2;              // Point_2 object
-typedef K::Segment_2 Segment_2;          // Segment_2 object
-typedef CGAL::Polygon_2<K> Polygon_2;    // Polygon_2 object
-typedef std::vector<Point_2> Points;     // vector with Point_2 objects
-typedef std::vector<Segment_2> segments; // vector with Segment_2 objects
+typedef K::Point_2 Point_2;               // Point_2 object
+typedef K::Segment_2 Segment_2;           // Segment_2 object
+typedef CGAL::Polygon_2<K> Polygon_2;     // Polygon_2 object
+typedef std::vector<Point_2> Points;      // vector with Point_2 objects
+typedef std::vector<Segment_2> segments;  // vector with Segment_2 objects
 typedef std::vector<Polygon_2> Polygon_v; // vector with Polygon_2 objects
 
 typedef CGAL::Search_traits_2<K> T;
@@ -69,12 +69,28 @@ int main(int argc, char *argv[])
     project_out << "||\t<convex_hull random local_search>\t||\t<convex_hull min local_search>\t||\t<convex_hull max local_search>\t||";
     project_out << "\t<incremental random 1a local_search>\t||\t<incremental random 1b local_search>\t||\t<incremental random 2a local_search>\t||";
     project_out << "\t<incremental random 2b local_search>\t||\t<incremental min 1a local_search>\t||\t<incremental min 1b local_search>\t||";
-    project_out << "\t<incremental min 2a local_search>\t||\t<incremental min 2b local_search>\t||" << std::endl; //telos local search
-    project_out << "Size\t\t||\tmin_score\t||\tmax_score\t||\tmin_bound\t||\tmax_bound\t||<<<<<<<<<<<<||" << std::endl;
+    project_out << "\t<incremental min 2a local_search>\t||\t<incremental min 2b local_search>\t||"; // telos local search
+    project_out << "\t<convex_hull random simulated_annealing local_search>\t||\t<convex_hull min simulated_annealing local_search>\t||" ;
+    project_out << "\t<convex_hull max simulated_annealing local_search>\t||\t<convex_hull random simulated_annealing global_search>\t||";
+    project_out << "\t<convex_hull min simulated_annealing global_search>\t||\t<cconvex_hull max simulated_annealing global_search>\t||" ;
+    project_out << "\t<incremental random 1a simulated_annealing local_search>\t||\t<incremental random 1b simulated_annealing local_search>\t||" ;
+    project_out << "\t<incremental random 2a simulated_annealing local_search>\t||\t<incremental random 2b simulated_annealing local_search>\t||" ;
+    project_out << "\t<incremental min 1a simulated_annealing local_search>\t||\t<incremental min 1b simulated_annealing local_search>\t||" ;
+    project_out << "\t<incremental min 2a simulated_annealing local_search>\t||\t<incremental min 2b simulated_annealing local_search>\t||" ;
+    project_out << "\t<incremental max 1a simulated_annealing local_search>\t||\t<incremental max 1b simulated_annealing local_search>\t||" ;
+    project_out << "\t<incremental max 2a simulated_annealing local_search>\t||\t<incremental max 2b simulated_annealing local_search>\t||" ;
+    project_out << "\t<incremental random 1a simulated_annealing global_search>\t||\t<incremental random 1b simulated_annealing global_search>\t||" ;
+    project_out << "\t<incremental random 2a simulated_annealing global_search>\t||\t<incremental random 2b simulated_annealing global_search>\t||" ;
+    project_out << "\t<incremental min 1a simulated_annealing global_search>\t||\t<incremental min 1b simulated_annealing global_search>\t||" ;
+    project_out << "\t<incremental min 2a simulated_annealing global_search>\t||\t<incremental min 2b simulated_annealing global_search>\t||" ;
+    project_out << "\t<incremental max 1a simulated_annealing global_search>\t||\t<incremental max 1b simulated_annealing global_search>\t||" ;
+    project_out << "\t<incremental max 2a simulated_annealing global_search>\t||\t<incremental max 2b simulated_annealing local_search>\t||" << std::endl;
 
+    project_out << "Size||min_score\t||max_score\t||min_bound\t||max_bound\t||<<<<<<<<<<<<||" << std::endl;
+    double *min;
     while (file_name_counter <= 100000)
     {
-        project_out << file_name_counter << "\t||" << std::endl;
+        project_out << std::endl <<file_name_counter << "\t||";
         if (file_name_counter < 100)
         {
             file_name_5 = "00000";
@@ -118,8 +134,7 @@ int main(int argc, char *argv[])
         Points result2;
         result2 = handleinput(in_f, result2); // function tha returns a vector with all the points given from the input file
         std::ofstream outfile;
-        
-        for (int j = 1; j <= 3; j++)        //convex hull random,min,max local search min,max
+        for (int j = 1; j <= 3; j++) // convex hull random,min,max local search min,max
         {
             outfile.open("output_polygon.txt", std::ofstream::out | std::ofstream::trunc); // output file
             flagedge = j;                                                                  // random ,min ,max
@@ -162,7 +177,14 @@ int main(int argc, char *argv[])
                 auto duration1 = duration_cast<std::chrono::milliseconds>(stop1 - start1); // ton xrono na ton upologizw mesa sthn local kai na ths dinw orisma to cut off an to xepernaei enw trexei na kanei ena flag 1
                 if (duration1.count() > cut_off)
                 {
-                    ratio = 1;
+                    if (min_m == 1)
+                    {
+                        ratio == 1;
+                    }
+                    else
+                    {
+                        ratio = 0;
+                    }
                 }
                 ratio_array[k] = ratio; // tha exw ola ta ratio
                 std::cout << ratio << std::endl;
@@ -176,22 +198,23 @@ int main(int argc, char *argv[])
                 if (k == 4 && min_m == 1)
                 {
                     double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                    std::cout << mo << std::endl
-                              << "min" << std::endl;
+                    project_out << mo << "\t||";
+                    min=std::min_element(ratio_array,ratio_array+5);
                     k = 0;
                     min_m = 2; // max
                 }
             }
             double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-            std::cout << mo << std::endl
-                      << "max" << std::endl;
+            project_out << mo << "\t||";
+            project_out <<*min<<"\t||";
+            project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
             p.clear();
             points.clear();
             chain.clear();
             poly.close();
             outfile.close();
         }
-        for (int j = 1; j <= 3; j++)    //incremental random min max 1a 2a 1b 2b local serach min max
+        for (int j = 1; j <= 3; j++) // incremental random min max 1a 2a 1b 2b local serach min max
         {
             outfile.open("output_polygon.txt", std::ofstream::out | std::ofstream::trunc); // output file
             flagedge = j;                                                                  // random ,min ,max
@@ -237,7 +260,14 @@ int main(int argc, char *argv[])
                     auto duration1 = duration_cast<std::chrono::milliseconds>(stop1 - start1); // ton xrono na ton upologizw mesa sthn local kai na ths dinw orisma to cut off an to xepernaei enw trexei na kanei ena flag 1
                     if (duration1.count() > cut_off)
                     {
-                        ratio = 1;
+                        if (min_m == 1)
+                        {
+                            ratio == 1;
+                        }
+                        else
+                        {
+                            ratio = 0;
+                        }
                     }
                     ratio_array[k] = ratio; // tha exw ola ta ratio
                     std::cout << ratio << std::endl;
@@ -251,15 +281,16 @@ int main(int argc, char *argv[])
                     if (k == 4 && min_m == 1)
                     {
                         double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                        std::cout << mo << std::endl
-                                  << "min" << std::endl;
+                        project_out << mo << "\t||";
+                        min=std::min_element(ratio_array,ratio_array+5);
                         k = 0;
                         min_m = 2; // max
                     }
                 }
                 double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                std::cout << mo << std::endl
-                          << "max " << std::endl;
+                project_out << mo << "\t||";
+                project_out <<*min<<"\t||";
+                project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
                 p.clear();
                 points.clear();
                 chain.clear();
@@ -268,11 +299,7 @@ int main(int argc, char *argv[])
             }
         }
 
-
-
-
-        
-        for (int j = 1; j <= 3; j++)    //convex hull random min max simulated annealing global 
+        for (int j = 1; j <= 3; j++) // convex hull random min max simulated annealing global
         {
             outfile.open("output_polygon.txt", std::ofstream::out | std::ofstream::trunc); // output file
             flagedge = j;                                                                  // random ,min ,max
@@ -315,7 +342,14 @@ int main(int argc, char *argv[])
                 auto duration1 = duration_cast<std::chrono::milliseconds>(stop1 - start1); // ton xrono na ton upologizw mesa sthn local kai na ths dinw orisma to cut off an to xepernaei enw trexei na kanei ena flag 1
                 if (duration1.count() > cut_off)
                 {
-                    ratio = 1;
+                    if (flag_min_max == 1)
+                    {
+                        ratio == 1;
+                    }
+                    else
+                    {
+                        ratio = 0;
+                    }
                 }
                 ratio_array[k] = ratio; // tha exw ola ta ratio
                 std::cout << ratio << std::endl;
@@ -329,15 +363,16 @@ int main(int argc, char *argv[])
                 if (k == 4 && flag_min_max == 1)
                 {
                     double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                    std::cout << mo << std::endl
-                              << "min" << std::endl;
+                    project_out << mo << "\t||";
+                    min=std::min_element(ratio_array,ratio_array+5);
                     k = 0;
                     flag_min_max = 2; // max
                 }
             }
             double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-            std::cout << mo << std::endl
-                      << "max " << std::endl;
+            project_out << mo << "\t||";
+            project_out <<*min<<"\t||";
+            project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
             p.clear();
             points.clear();
             chain.clear();
@@ -345,7 +380,7 @@ int main(int argc, char *argv[])
             outfile.close();
         }
 
-        for (int j = 1; j <= 3; j++)    //convex_hull random min max simulated_annealing local min max
+        for (int j = 1; j <= 3; j++) // convex_hull random min max simulated_annealing local min max
         {
             outfile.open("output_polygon.txt", std::ofstream::out | std::ofstream::trunc); // output file
             flagedge = j;                                                                  // random ,min ,max
@@ -388,7 +423,14 @@ int main(int argc, char *argv[])
                 auto duration1 = duration_cast<std::chrono::milliseconds>(stop1 - start1); // ton xrono na ton upologizw mesa sthn local kai na ths dinw orisma to cut off an to xepernaei enw trexei na kanei ena flag 1
                 if (duration1.count() > cut_off)
                 {
-                    ratio = 1;
+                    if (flag_min_max == 1)
+                    {
+                        ratio == 1;
+                    }
+                    else
+                    {
+                        ratio = 0;
+                    }
                 }
                 ratio_array[k] = ratio; // tha exw ola ta ratio
                 std::cout << ratio << std::endl;
@@ -402,26 +444,27 @@ int main(int argc, char *argv[])
                 if (k == 4 && flag_min_max == 1)
                 {
                     double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                    std::cout << mo << std::endl
-                              << "min" << std::endl;
+                    project_out << mo << "\t||";
+                    min=std::min_element(ratio_array,ratio_array+5);
                     k = 0;
                     flag_min_max = 2; // max
                 }
             }
             double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-            std::cout << mo << std::endl
-                      << "max " << std::endl;
+            project_out << mo << "\t||";
+            project_out <<*min<<"\t||";
+            project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
             p.clear();
             points.clear();
             chain.clear();
             poly.close();
             outfile.close();
         }
-        for (int j = 1; j <= 3; j++)    //incremental random min max 1a 2a 1b 2b simulated annealing global min max
+        for (int j = 1; j <= 3; j++) // incremental random min max 1a 2a 1b 2b simulated annealing global min max
         {
             outfile.open("output_polygon.txt", std::ofstream::out | std::ofstream::trunc); // output file
             flagedge = j;                                                                  // random ,min ,max
-            flag_min_max = 1;                                                                 // min
+            flag_min_max = 1;                                                              // min
             for (int kl = 1; kl <= 4; kl++)
             {
                 flaginit = kl;
@@ -454,7 +497,7 @@ int main(int argc, char *argv[])
                 for (int k = 0; k < 5; k++)
                 {
                     L = 500;
-                    option=1;
+                    option = 1;
                     std::ofstream outf;
                     outf.open("output.txt", std::ofstream::out | std::ofstream::trunc);
                     auto start1 = high_resolution_clock::now();
@@ -463,7 +506,14 @@ int main(int argc, char *argv[])
                     auto duration1 = duration_cast<std::chrono::milliseconds>(stop1 - start1); // ton xrono na ton upologizw mesa sthn local kai na ths dinw orisma to cut off an to xepernaei enw trexei na kanei ena flag 1
                     if (duration1.count() > cut_off)
                     {
-                        ratio = 1;
+                        if (flag_min_max == 1)
+                        {
+                            ratio == 1;
+                        }
+                        else
+                        {
+                            ratio = 0;
+                        }
                     }
                     ratio_array[k] = ratio; // tha exw ola ta ratio
                     std::cout << ratio << std::endl;
@@ -474,95 +524,19 @@ int main(int argc, char *argv[])
                     chain = temp_c;
                     p = temp_po;
                     outf.close();
-                    if (k == 4 && flag_min_max  == 1)
+                    if (k == 4 && flag_min_max == 1)
                     {
                         double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                        std::cout << mo << std::endl
-                                  << "min" << std::endl;
-                        k = 0;
-                        flag_min_max  = 2; // max
-                    }
-                }
-                double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                std::cout << mo << std::endl
-                          << "max " << std::endl;
-                p.clear();
-                points.clear();
-                chain.clear();
-                poly.close();
-                outfile.close();
-            }
-        }
-        
-        for (int j = 1; j <= 3; j++)    //incremental random min max 1a 1b 2a 2b local min max
-        {
-            outfile.open("output_polygon.txt", std::ofstream::out | std::ofstream::trunc); // output file
-            flagedge = j;                                                                  // random ,min ,max
-            flag_min_max = 1;                                                                 // min
-            for (int kl = 1; kl <= 4; kl++)
-            {
-                flaginit = kl;
-                incremental_fun(result2, outfile);
-                std::ifstream poly("output_polygon.txt");
-                std::getline(poly, line); // skip first line
-                int i = 0;
-                char *temp;
-                int pos;
-                int x;
-                int y;
-                std::string sub1;
-                std::string sub2;
-                while (i < file_name_counter)
-                { // extracting the points of the polygon from my output and making the polygon we will use
-                    std::getline(poly, line);
-                    pos = line.find(" ");
-                    sub1 = line.substr(0, pos);
-                    sub2 = line.substr(pos + 1);
-                    x = stoi(sub1);
-                    y = stoi(sub2);
-                    p.push_back(Point_2(x, y));
-                    i++;
-                }
-                get_points(file_name_counter);
-                create_chain(file_name_counter);
-                Points temp_p = points;
-                segments temp_c = chain;
-                Polygon_2 temp_po = p;
-                for (int k = 0; k < 5; k++)
-                {
-                    L = 500;
-                    option=2;
-                    std::ofstream outf;
-                    outf.open("output.txt", std::ofstream::out | std::ofstream::trunc);
-                    auto start1 = high_resolution_clock::now();
-                    double ratio = simulated_annealing(file_name_counter, outf); // min
-                    auto stop1 = std::chrono::high_resolution_clock::now();
-                    auto duration1 = duration_cast<std::chrono::milliseconds>(stop1 - start1); // ton xrono na ton upologizw mesa sthn local kai na ths dinw orisma to cut off an to xepernaei enw trexei na kanei ena flag 1
-                    if (duration1.count() > cut_off)
-                    {
-                        ratio = 1;
-                    }
-                    ratio_array[k] = ratio; // tha exw ola ta ratio
-                    std::cout << ratio << std::endl;
-                    points.clear();
-                    chain.clear();
-                    p.clear();
-                    points = temp_p;
-                    chain = temp_c;
-                    p = temp_po;
-                    outf.close();
-                    if (k == 4 && flag_min_max  == 1)
-                    {
-                        double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                        std::cout << mo << std::endl
-                                  << "min" << std::endl;
+                        project_out << mo << "\t||";
+                        min=std::min_element(ratio_array,ratio_array+5);
                         k = 0;
                         flag_min_max = 2; // max
                     }
                 }
                 double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
-                std::cout << mo << std::endl
-                          << "max " << std::endl;
+                project_out << mo << "\t||";
+                project_out <<*min<<"\t||";
+                project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
                 p.clear();
                 points.clear();
                 chain.clear();
@@ -571,6 +545,90 @@ int main(int argc, char *argv[])
             }
         }
 
+        for (int j = 1; j <= 3; j++) // incremental random min max 1a 1b 2a 2b local min max
+        {
+            outfile.open("output_polygon.txt", std::ofstream::out | std::ofstream::trunc); // output file
+            flagedge = j;                                                                  // random ,min ,max
+            flag_min_max = 1;                                                              // min
+            for (int kl = 1; kl <= 4; kl++)
+            {
+                flaginit = kl;
+                incremental_fun(result2, outfile);
+                std::ifstream poly("output_polygon.txt");
+                std::getline(poly, line); // skip first line
+                int i = 0;
+                char *temp;
+                int pos;
+                int x;
+                int y;
+                std::string sub1;
+                std::string sub2;
+                while (i < file_name_counter)
+                { // extracting the points of the polygon from my output and making the polygon we will use
+                    std::getline(poly, line);
+                    pos = line.find(" ");
+                    sub1 = line.substr(0, pos);
+                    sub2 = line.substr(pos + 1);
+                    x = stoi(sub1);
+                    y = stoi(sub2);
+                    p.push_back(Point_2(x, y));
+                    i++;
+                }
+                get_points(file_name_counter);
+                create_chain(file_name_counter);
+                Points temp_p = points;
+                segments temp_c = chain;
+                Polygon_2 temp_po = p;
+                for (int k = 0; k < 5; k++)
+                {
+                    L = 500;
+                    option = 2;
+                    std::ofstream outf;
+                    outf.open("output.txt", std::ofstream::out | std::ofstream::trunc);
+                    auto start1 = high_resolution_clock::now();
+                    double ratio = simulated_annealing(file_name_counter, outf); // min
+                    auto stop1 = std::chrono::high_resolution_clock::now();
+                    auto duration1 = duration_cast<std::chrono::milliseconds>(stop1 - start1); // ton xrono na ton upologizw mesa sthn local kai na ths dinw orisma to cut off an to xepernaei enw trexei na kanei ena flag 1
+                    if (duration1.count() > cut_off)
+                    {
+                        if (flag_min_max == 1)
+                        {
+                            ratio == 1;
+                        }
+                        else
+                        {
+                            ratio = 0;
+                        }
+                    }
+                    ratio_array[k] = ratio; // tha exw ola ta ratio
+                    std::cout << ratio << std::endl;
+                    points.clear();
+                    chain.clear();
+                    p.clear();
+                    points = temp_p;
+                    chain = temp_c;
+                    p = temp_po;
+                    outf.close();
+                    if (k == 4 && flag_min_max == 1)
+                    {
+                        double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                        project_out << mo << "\t||";
+                        min=std::min_element(ratio_array,ratio_array+5);
+                        k = 0;
+                        flag_min_max = 2; // max
+                    }
+                }
+                double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                project_out << mo << "\t||";
+                project_out <<*min<<"\t||";
+                project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
+                p.clear();
+                points.clear();
+                chain.clear();
+                poly.close();
+                outfile.close();
+            }
+        }
 
         if (file_name_counter < 100)
         {
@@ -590,54 +648,4 @@ int main(int argc, char *argv[])
         }
         in_f.close();
     }
-    /*
-    Points result2;
-    std::string line;
-    auto start = high_resolution_clock::now(); // start counting execution time for the program
-    std::ifstream in(argv[14]);                // input file
-    std::ofstream outfile;
-    outfile.open(argv[16]); // output file
-    handle_input_p1(argv);//handle input for project 1
-    std::getline(in, line); // skip the first two lines from input(we dont need them)
-    std::getline(in, line);
-    result2 = handleinput(in, result2); // function tha returns a vector with all the points given from the input file
-    if (flagalgo == 2)  //if convex_hull
-    {
-        convex_hull_fun(result2,outfile);
-        auto stop = std::chrono::high_resolution_clock::now();
-        auto duration = duration_cast<std::chrono::milliseconds>(stop - start);
-        outfile << "construction time: " << duration.count() << " ms " << std::endl;
-    }
-
-    else if (flagalgo == 1)
-    {                                                                          // if incremental
-        incremental_fun(result2,outfile);
-        auto stop = std::chrono::high_resolution_clock::now();
-        auto duration = duration_cast<std::chrono::milliseconds>(stop - start);
-        outfile << "construction time: " << duration.count() << " ms " << std::endl;
-    }
-
-
-    //--------------------------
-
-    auto start1 = high_resolution_clock::now();
-    handle_input(argv);
-    how_many_points = create_polygon(argv[2]);
-    get_points(how_many_points);
-    create_chain(how_many_points);
-    std::ofstream outf;
-    outf.open(argv[4]);
-    if (flag_algo == 1)
-    { // if algorithm is local search
-        local_search(flag_min_max,outf);
-    }
-    else if (flag_algo == 2)
-    { // if algorithm is simulated_annealing
-
-        simulated_annealing(how_many_points,outf);
-    }
-
-    auto stop1 = std::chrono::high_resolution_clock::now();
-    auto duration1 = duration_cast<std::chrono::milliseconds>(stop1 - start1);
-    outf << "construction time: " << duration1.count() << " ms " << std::endl*/
 }
