@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     std::string file_name_4 = ".instance";
     std::string file_name_5;
     std::string final_file_name;
-    double ratio_array[5];
+    double ratio_array[3];
     std::ofstream project_out;
     project_out.open(argv[4]);
     project_out << "||\t<convex_hull random local_search>\t||\t<convex_hull min local_search>\t||\t<convex_hull max local_search>\t||";
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
             Points temp_p = points;
             segments temp_c = chain;
             Polygon_2 temp_po = p;
-            for (int k = 0; k < 5; k++)
+            for (int k = 0; k < 3; k++)
             {
                 L = 1;
                 threshold = 0.1;
@@ -194,19 +194,19 @@ int main(int argc, char *argv[])
                 chain = temp_c;
                 p = temp_po;
                 outf.close();
-                if (k == 4 && min_m == 1)
+                if (k == 2 && min_m == 1)
                 {
-                    double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                    double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
                     project_out << mo << "\t||";
-                    min=std::min_element(ratio_array,ratio_array+5);
+                    min=std::min_element(ratio_array,ratio_array+3);
                     k = 0;
                     min_m = 2; // max
                 }
             }
-            double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+            double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
             project_out << mo << "\t||";
             project_out <<*min<<"\t||";
-            project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
+            project_out<<*(std::max_element(ratio_array,ratio_array+3))<<"\t||" <<std::endl <<"\t||";
             p.clear();
             points.clear();
             chain.clear();
@@ -247,7 +247,7 @@ int main(int argc, char *argv[])
                 Points temp_p = points;
                 segments temp_c = chain;
                 Polygon_2 temp_po = p;
-                for (int k = 0; k < 5; k++)
+                for (int k = 0; k < 3; k++)
                 {
                     L = 4;
                     threshold = 0.1;
@@ -276,19 +276,19 @@ int main(int argc, char *argv[])
                     chain = temp_c;
                     p = temp_po;
                     outf.close();
-                    if (k == 4 && min_m == 1)
+                    if (k == 2 && min_m == 1)
                     {
-                        double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                        double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
                         project_out << mo << "\t||";
-                        min=std::min_element(ratio_array,ratio_array+5);
+                        min=std::min_element(ratio_array,ratio_array+3);
                         k = 0;
                         min_m = 2; // max
                     }
                 }
-                double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
                 project_out << mo << "\t||";
                 project_out <<*min<<"\t||";
-                project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
+                project_out<<*(std::max_element(ratio_array,ratio_array+3))<<"\t||" <<std::endl <<"\t||";
                 p.clear();
                 points.clear();
                 chain.clear();
@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
             Points temp_p = points;
             segments temp_c = chain;
             Polygon_2 temp_po = p;
-            for (int k = 0; k < 5; k++)
+            for (int k = 0; k < 3; k++)
             {
                 L = 500;
                 option = 1; // local
@@ -357,19 +357,19 @@ int main(int argc, char *argv[])
                 chain = temp_c;
                 p = temp_po;
                 outf.close();
-                if (k == 4 && flag_min_max == 1)
+                if (k == 2 && flag_min_max == 1)
                 {
-                    double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                    double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2]) / 3;
                     project_out << mo << "\t||";
-                    min=std::min_element(ratio_array,ratio_array+5);
+                    min=std::min_element(ratio_array,ratio_array+3);
                     k = 0;
                     flag_min_max = 2; // max
                 }
             }
-            double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+            double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
             project_out << mo << "\t||";
             project_out <<*min<<"\t||";
-            project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
+            project_out<<*(std::max_element(ratio_array,ratio_array+3))<<"\t||" <<std::endl <<"\t||";
             p.clear();
             points.clear();
             chain.clear();
@@ -408,7 +408,7 @@ int main(int argc, char *argv[])
             Points temp_p = points;
             segments temp_c = chain;
             Polygon_2 temp_po = p;
-            for (int k = 0; k < 5; k++)
+            for (int k = 0; k < 3; k++)
             {
                 L = 500;
                 option = 2; // local
@@ -437,19 +437,19 @@ int main(int argc, char *argv[])
                 chain = temp_c;
                 p = temp_po;
                 outf.close();
-                if (k == 4 && flag_min_max == 1)
+                if (k == 2 && flag_min_max == 1)
                 {
-                    double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                    double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
                     project_out << mo << "\t||";
-                    min=std::min_element(ratio_array,ratio_array+5);
+                    min=std::min_element(ratio_array,ratio_array+3);
                     k = 0;
                     flag_min_max = 2; // max
                 }
             }
-            double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+            double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
             project_out << mo << "\t||";
             project_out <<*min<<"\t||";
-            project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
+            project_out<<*(std::max_element(ratio_array,ratio_array+3))<<"\t||" <<std::endl <<"\t||";
             p.clear();
             points.clear();
             chain.clear();
@@ -490,7 +490,7 @@ int main(int argc, char *argv[])
                 Points temp_p = points;
                 segments temp_c = chain;
                 Polygon_2 temp_po = p;
-                for (int k = 0; k < 5; k++)
+                for (int k = 0; k < 3; k++)
                 {
                     L = 500;
                     option = 1;
@@ -519,19 +519,19 @@ int main(int argc, char *argv[])
                     chain = temp_c;
                     p = temp_po;
                     outf.close();
-                    if (k == 4 && flag_min_max == 1)
+                    if (k == 2 && flag_min_max == 1)
                     {
-                        double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                        double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
                         project_out << mo << "\t||";
-                        min=std::min_element(ratio_array,ratio_array+5);
+                        min=std::min_element(ratio_array,ratio_array+3);
                         k = 0;
                         flag_min_max = 2; // max
                     }
                 }
-                double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
                 project_out << mo << "\t||";
                 project_out <<*min<<"\t||";
-                project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
+                project_out<<*(std::max_element(ratio_array,ratio_array+3))<<"\t||" <<std::endl <<"\t||";
                 p.clear();
                 points.clear();
                 chain.clear();
@@ -574,7 +574,7 @@ int main(int argc, char *argv[])
                 Points temp_p = points;
                 segments temp_c = chain;
                 Polygon_2 temp_po = p;
-                for (int k = 0; k < 5; k++)
+                for (int k = 0; k < 3; k++)
                 {
                     L = 500;
                     option = 2;
@@ -603,19 +603,19 @@ int main(int argc, char *argv[])
                     chain = temp_c;
                     p = temp_po;
                     outf.close();
-                    if (k == 4 && flag_min_max == 1)
+                    if (k == 2 && flag_min_max == 1)
                     {
-                        double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                        double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
                         project_out << mo << "\t||";
-                        min=std::min_element(ratio_array,ratio_array+5);
+                        min=std::min_element(ratio_array,ratio_array+3);
                         k = 0;
                         flag_min_max = 2; // max
                     }
                 }
-                double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] + ratio_array[3] + ratio_array[4]) / 5;
+                double mo = (ratio_array[0] + ratio_array[1] + ratio_array[2] ) / 3;
                 project_out << mo << "\t||";
                 project_out <<*min<<"\t||";
-                project_out<<*(std::max_element(ratio_array,ratio_array+5))<<"\t||" <<std::endl <<"\t||";
+                project_out<<*(std::max_element(ratio_array,ratio_array+3))<<"\t||" <<std::endl <<"\t||";
                 p.clear();
                 points.clear();
                 chain.clear();
