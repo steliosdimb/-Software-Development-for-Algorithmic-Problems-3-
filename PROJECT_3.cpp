@@ -187,7 +187,6 @@ int main(int argc, char *argv[])
                     }
                 }
                 ratio_array[k] = ratio; // tha exw ola ta ratio
-                std::cout << ratio << std::endl;
                 points.clear();
                 chain.clear();
                 p.clear();
@@ -270,7 +269,6 @@ int main(int argc, char *argv[])
                         }
                     }
                     ratio_array[k] = ratio; // tha exw ola ta ratio
-                    std::cout << ratio << std::endl;
                     points.clear();
                     chain.clear();
                     p.clear();
@@ -352,7 +350,6 @@ int main(int argc, char *argv[])
                     }
                 }
                 ratio_array[k] = ratio; // tha exw ola ta ratio
-                std::cout << ratio << std::endl;
                 points.clear();
                 chain.clear();
                 p.clear();
@@ -433,7 +430,6 @@ int main(int argc, char *argv[])
                     }
                 }
                 ratio_array[k] = ratio; // tha exw ola ta ratio
-                std::cout << ratio << std::endl;
                 points.clear();
                 chain.clear();
                 p.clear();
@@ -516,7 +512,6 @@ int main(int argc, char *argv[])
                         }
                     }
                     ratio_array[k] = ratio; // tha exw ola ta ratio
-                    std::cout << ratio << std::endl;
                     points.clear();
                     chain.clear();
                     p.clear();
@@ -601,7 +596,6 @@ int main(int argc, char *argv[])
                         }
                     }
                     ratio_array[k] = ratio; // tha exw ola ta ratio
-                    std::cout << ratio << std::endl;
                     points.clear();
                     chain.clear();
                     p.clear();
