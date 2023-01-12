@@ -1665,7 +1665,8 @@ double sa_local(double previous_energy, int how_many_points)
     p[random_position + 1] = random_point; // swap positions,random point with its successor
     random_point = p[random_position];
     successor_point = p[random_position + 1];                                                                                           // new values for succesor point and the random point
-    chain.clear();                                                                                                                      // clear the chain because we have a new polygon
+    chain.clear(); 
+                                                                                                                     // clear the chain because we have a new polygon
     create_chain(how_many_points);                                                                                                      // create the new chain
     do_they_intersect = find_intersection_1(Segment_2(predecessor_point, random_point), Segment_2(successor_point, d_successor_point)); // check if pr,qs intersect // check if pr,qs intersect
     if (do_they_intersect == 1)
@@ -1680,6 +1681,7 @@ double sa_local(double previous_energy, int how_many_points)
     {
       for (i = 0; i < how_many_points; i++)
       {
+
         tr.insert(p[i]); // construct a kd tree with every point
       }
       tr.build(); // build the tree
@@ -1687,6 +1689,7 @@ double sa_local(double previous_energy, int how_many_points)
       tempp.push_back(random_point);
       tempp.push_back(d_successor_point);
       tempp.push_back(successor_point);
+
       sort(tempp.begin(), tempp.end());
       int min_x = tempp[0].x();
       int max_x = tempp[3].x();
@@ -1708,19 +1711,23 @@ double sa_local(double previous_energy, int how_many_points)
 
       for (i = 0; i < temp.size(); i++)
       {
+
         result = 0;
         result1 = 0;
 
         flag = 0;
         flag1 = 0;
         if (temp[i] == random_point || temp[i] == successor_point)
+        
         { // dont need to chekc for points q and r(successor and random) because their edges dont intersect
+
           continue;
         }
         else
         { // for any other point
           for (j = 0; j < chain.size(); j++)
           {
+
             if (chain[j][0] == temp[i] && chain[j][1] != random_point && chain[j][1] != successor_point)
             { // if i find an edge which does not have q or r as a point i need to check if it intersects
               flag = 1;
@@ -1732,6 +1739,7 @@ double sa_local(double previous_energy, int how_many_points)
               temp2 = chain[j];
             }
           }
+
         }
         if (flag == 1)
         {
@@ -1824,7 +1832,7 @@ double sa_global(double previous_energy, int how_many_points)
     R = (float)rand() / RAND_MAX;
     if (option == 3)
     {
-      random_position = 2 + rand() % ((how_many_points) - 1); // find a random position of a point cant be the first or second or before last or last
+      random_position = 2 + rand() % ((how_many_points) -2); // find a random position of a point cant be the first or second or before last or last
       int kl;
       int maxx=-1;
       Point_2 found_p;
@@ -1835,12 +1843,12 @@ double sa_global(double previous_energy, int how_many_points)
         }
       }
       while(p[random_position]==found_p || p[random_position+1]==found_p)
-        random_position = 2 + rand() % ((how_many_points) - 1);
+        random_position = 2 + rand() % ((how_many_points) - 2);
 
     }                                                             // if we call from sudivision
     else if (option != 3)
     {
-      random_position = 1 + rand() % ((how_many_points)-1); // find a random position of a point cant be the first or last point
+      random_position = 1 + rand() % ((how_many_points)-2); // find a random position of a point cant be the first or last point
     }
     temp_polygon = p;
     random_point = p[random_position];          // find a random point
@@ -1857,13 +1865,13 @@ double sa_global(double previous_energy, int how_many_points)
           found_p=p[kl];
         }
       }
-      random_position_1 = 1 + rand() % (how_many_points); // find random position for te other point.Cant be the first point because we use subdivision
-      while(p[random_position+1]==found_p)
-        random_position = 1 + rand() % (how_many_points);
+      random_position_1 = 1 + rand() % (how_many_points-1); // find random position for te other point.Cant be the first point because we use subdivision
+      while(p[random_position_1+1]==found_p)
+        random_position_1 = 1 + rand() % (how_many_points-1);
     }
     else if (option != 3)
     {
-      random_position_1 = rand() % (how_many_points); // find random position for te other point.Can be the first point because we only get its successor cant be the last point
+      random_position_1 = rand() % (how_many_points-1); // find random position for te other point.Can be the first point because we only get its successor cant be the last point
     }
     while (random_position_1 == random_position || random_position_1 == random_position + 1 || random_position_1 == random_position - 1 || random_position_1 == random_position - 2)
     {
@@ -1881,20 +1889,18 @@ double sa_global(double previous_energy, int how_many_points)
             found_p = p[kl];
           }
         }
-        random_position_1 = 1 + rand() % (how_many_points); // find random position for te other point.Cant be the first point because we use subdivision
-        while (p[random_position + 1] == found_p)
-          random_position = 1 + rand() % (how_many_points);
+        random_position_1 = 1 + rand() % (how_many_points-1); // find random position for te other point.Cant be the first point because we use subdivision
+        while (p[random_position_1 + 1] == found_p)
+          random_position_1 = 1 + rand() % (how_many_points-1);
       }
       else if (option != 3)
       {
-        random_position_1 = rand() % (how_many_points); // find random position for te other point.Can be the first point because we only get its successor cant be the last point
+        random_position_1 = rand() % (how_many_points-1); // find random position for te other point.Can be the first point because we only get its successor cant be the last point
       }                                                 // find another point
     }
     random_point_1 = p[random_position_1];        // find random point 2
     successor_point_1 = p[random_position_1 + 1]; // find its successor
-
     chain.erase(std::find(chain.begin(), chain.end(), Segment_2(random_point, successor_point))); // erase segment qp
-
     for (i = 0; i < chain.size(); i++)
     {
       if (chain[i][0] == Point_2(predecessor_point))
@@ -1902,7 +1908,6 @@ double sa_global(double previous_energy, int how_many_points)
         chain[i] = Segment_2(Point_2(predecessor_point), Point_2(successor_point)); // make the new edge pr
       }
     }
-
     int pos;
     for (i = 0; i < chain.size(); i++)
     {
@@ -1917,6 +1922,7 @@ double sa_global(double previous_energy, int how_many_points)
     create_new_polygon();
     int result;
     int result3;
+    //std::cout << successor_point << std::endl;
     result = find_intersection_1(Segment_2(predecessor_point, successor_point), Segment_2(random_point_1, random_point));
     result3 = find_intersection_1(Segment_2(predecessor_point, successor_point), Segment_2(random_point, successor_point_1));
     // check if pr intersects sq qt
